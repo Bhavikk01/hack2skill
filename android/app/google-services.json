@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "502308356491",
+    "project_id": "hackskills2303",
+    "storage_bucket": "hackskills2303.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:502308356491:android:7cd44580b1b0627672ef8e",
+        "android_client_info": {
+          "package_name": "com.dbestech.chatty"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "502308356491-rd5h9hhcbpbbjl5m3r8abbj9vikjojrc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgaLlfLlKPMnvQuOLa7Lu3otxjq63chLU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "502308356491-3j3tinsblv15smp92ecpmv5dlkj8pgas.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "502308356491-3givd11am3ngvtaaeigjbjpdi81ekdu1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.hack2skill"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:502308356491:android:7cae2a2a6c01188372ef8e",
+        "android_client_info": {
+          "package_name": "com.example.hack2skill"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "502308356491-fl078cc968tj0lf2eksngc5lkigqfbjo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.hack2skill",
+            "certificate_hash": "f0dc321bf7dff6060c8884ff51d045e3bb12dfe1"
+          }
+        },
+        {
+          "client_id": "502308356491-rd5h9hhcbpbbjl5m3r8abbj9vikjojrc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgaLlfLlKPMnvQuOLa7Lu3otxjq63chLU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "502308356491-3j3tinsblv15smp92ecpmv5dlkj8pgas.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "502308356491-3givd11am3ngvtaaeigjbjpdi81ekdu1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.hack2skill"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
