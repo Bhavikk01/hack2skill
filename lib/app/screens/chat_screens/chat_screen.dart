@@ -1,7 +1,7 @@
 import 'package:chatty/app/screens/components/animated_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
-import '../models/rive_assests.dart';
+import '../../models/rive_assests.dart';
 
 
 class ChatHomePage extends StatefulWidget {
@@ -55,10 +55,7 @@ class _ChatHomePageState extends State<ChatHomePage> {
                          artboard: bottomNavs[index].artboard,
                          onInit: (artboard) {
                            setState(() {
-
                            });
-
-
                          },
                        ),
                      ),

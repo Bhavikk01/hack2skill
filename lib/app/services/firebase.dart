@@ -1,6 +1,7 @@
 
 import 'dart:developer';
 
+import 'package:chatty/app/models/chat_room_model/chat_room_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -33,16 +34,11 @@ class FirebaseFireStore extends GetxController{
         .snapshots();
   }
 
-  Stream<List<UserModel>> getAllUsers() {
+  Stream<QuerySnapshot> getAllUsers() {
     return fireStore
         .collection("Users")
         .where("uid", isNotEqualTo: UserStore.to.uid)
-        .snapshots()
-        .map((snapshot) => snapshot.docs.map(
-            (e) =>
-            UserModel.fromJson(e.data())
-    ).toList()
-    );
+        .snapshots();
   }
 
   Future<void> handleSignIn() async {
@@ -83,15 +79,56 @@ class FirebaseFireStore extends GetxController{
           await UserStore.to.saveProfile(userModel);
         }
       } on FirebaseAuthException catch (e) {
-        if (e.code == 'account-exists-with-different-credential') {
-
-        }
-        else if (e.code == 'invalid-credential') {
-
-        }
+        if (e.code == 'account-exists-with-different-credential') {}
+        else if (e.code == 'invalid-credential') {}
       } catch (e) {
         log('$e Occurred');
       }
     }
   }
+
+  Future<void> sendMessage(Map<String, dynamic> messageContent, String chatRoomId) async {
+    return await fireStore
+        .collection('message')
+        .doc(chatRoomId)
+        .collection("messageList")
+        .doc()
+        .set(messageContent);
+  }
+
+  Future<void> updateMessage(Map<String, dynamic> lastMessage, String chatRoomId) async {
+    return await fireStore
+        .collection('message')
+        .doc(chatRoomId)
+        .update(lastMessage);
+  }
+
+   Stream<QuerySnapshot> readMessage(String docId) {
+    return fireStore
+        .collection("message")
+        .doc(docId)
+        .collection("messageList")
+        .orderBy("messageTm", descending: true)
+        .snapshots();
+  }
+
+  Future<QuerySnapshot> getChatRoom() async {
+    return await fireStore
+        .collection("message")
+        .where("users", arrayContains: UserStore.to.uid)
+        .where("lastMessage", isNotEqualTo: '')
+        .get();
+  }
+
+  Future<void> createChatRoom(ChatRoomModel chatRoom) async {
+    final doc = await fireStore.collection("message").doc(chatRoom.chatRoomId).get();
+    if(!doc.exists){
+      await fireStore
+          .collection("message")
+          .doc(chatRoom.chatRoomId)
+          .set(chatRoom.toJson());
+    }
+  }
+
+
 }
