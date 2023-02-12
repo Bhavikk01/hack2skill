@@ -5,6 +5,7 @@ import 'package:chatty/app/screens/welcome_screen/Getx_helper/bindings.dart';
 import 'package:get/get.dart';
 
 import '../screens/auth_screens/Getx_helper/bindings.dart';
+import '../screens/chat_screens/chat_screen.dart';
 import '../screens/welcome_screen/welcome_page.dart';
 
 class RouteHelper{
@@ -17,11 +18,11 @@ class RouteHelper{
       binding: WelcomeBinding(),
     ),
 
-    // GetPage(
-    //   name: RoutePaths.homePage,
-    //   page: ()=> const HomePage(),
-    //   binding: ,
-    // ),
+    GetPage(
+      name: RoutePaths.homePage,
+      page: ()=> const ChatHomePage() ,
+    ),
+
     GetPage(
       name: RoutePaths.signInGoogle,
       page: ()=> const SignInGoogle(),

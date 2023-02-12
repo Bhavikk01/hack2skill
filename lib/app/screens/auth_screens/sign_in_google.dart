@@ -49,7 +49,7 @@ class SignInGoogle extends GetView<SignInController> {
                       await controller.handleSignIn();
                       if(UserStore.to.hasToken){
                         log('Hello');
-                        Get.offAndToNamed(RoutePaths.welcomePage);
+                        Get.offAndToNamed(RoutePaths.homePage);
                       }else{
                         log('Not here again');
                       }
