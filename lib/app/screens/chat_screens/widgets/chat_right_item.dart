@@ -1,37 +1,60 @@
 import 'package:chatty/app/models/chat_space_model/chat_space_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-Widget chatRightItem(ChatSpaceModel item){
+import '../../../utils/date.dart';
+
+Widget chatRightItem(ChatSpaceModel item, bool isSameUser){
   return Container(
-    padding: EdgeInsets.symmetric( horizontal: 15.w, vertical: 10.w),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.end,
+    padding: EdgeInsets.symmetric( horizontal: 10.w),
+    alignment: Alignment.topRight,
+    child: Stack(
       children: [
-        ConstrainedBox(
+        Container(
+          padding: EdgeInsets.all(14.w),
           constraints: BoxConstraints(
             maxWidth: 230.w,
-            maxHeight: 40.w,
+            maxHeight: 1500.w,
           ),
-          child: Container(
-            margin: EdgeInsets.only( right: 10.w, top: 0.w),
-            padding: EdgeInsets.symmetric( vertical: 10.w, horizontal: 10.w),
-            decoration: BoxDecoration(
-                gradient: const LinearGradient( colors: [
-                  Color.fromARGB(255, 176, 106, 231),
-                  Color.fromARGB(255, 166, 112, 231),
-                  Color.fromARGB(255, 131, 123, 231),
-                  Color.fromARGB(255, 104, 132, 231),
-                ],
-                  transform: GradientRotation(90),
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(10.r))
-            ),
-            child: Text(
-                item.message
+          decoration: BoxDecoration(
+            color: const Color(0xff00C2CB),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 4.r,
+                offset: const Offset(0,2),
+              )
+            ],
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(18.r),
+              bottomLeft: Radius.circular(18.r),
+              topRight: Radius.circular(18.r),
             ),
           ),
-        )
+          child:  Text(
+            item.message,
+            maxLines: 10,
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.w400,
+              fontSize: 13.sp,
+              color: Colors.black,
+            ),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        Positioned(
+          bottom: 0,
+          left: 10,
+          child: Text(
+            '${timeFormated(item.messageTm).hour}: ${timeFormated(item.messageTm).minute}' ,
+            style: GoogleFonts.poppins(
+              fontSize: 10.sp,
+              fontWeight: FontWeight.w400,
+            ),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
       ],
     ),
   );

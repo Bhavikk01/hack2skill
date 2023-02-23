@@ -1,73 +1,58 @@
-import 'package:chatty/app/screens/components/animated_bar.dart';
+import 'package:chatty/app/models/chat_room_model/chat_room_model.dart';
+import 'package:chatty/app/routes/route_paths.dart';
+import 'package:chatty/app/screens/chat_screens/Getx_helper/chat_controller.dart';
+import 'package:chatty/app/store/store.dart';
 import 'package:flutter/material.dart';
-import 'package:rive/rive.dart';
-import '../../models/rive_assests.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
+class ChatHomePage extends GetView<ChatController> {
+  ChatHomePage({Key? key}) : super(key: key);
 
-class ChatHomePage extends StatefulWidget {
-  const ChatHomePage({Key? key}) : super(key: key);
-
-  @override
-  State<ChatHomePage> createState() => _ChatHomePageState();
-}
-
-class _ChatHomePageState extends State<ChatHomePage> {
-  RiveAssest selectedBottomNav = bottomNavs.first;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // bottomNavigationBar: SafeArea(),
-      body: Container(
-        padding: const EdgeInsets.all(12),
-        margin: const EdgeInsets.symmetric(horizontal: 24),
-        decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.8),
-          borderRadius: const BorderRadius.all(Radius.circular(24)),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-             ...List.generate(bottomNavs.length, (index) =>GestureDetector(
-               onTap: (){
-                 bottomNavs[index].input!.change(true);
-                 if(bottomNavs[index] != selectedBottomNav) {
-                   setState(() {
-                     selectedBottomNav = bottomNavs[index];
-                   });
-                 }
-                 Future.delayed(const Duration(seconds: 1),() {
-                   bottomNavs[index].input!.change(false);
-                 });
-               },
-               child: Column(
-                 mainAxisSize: MainAxisSize.min,
-                 children: [
-                   AnimatedBar(
-                       isActive: bottomNavs[index] == selectedBottomNav),
-                   SizedBox(
-                     height: 36,
-                     width: 36,
-                     child: Opacity(
-                       opacity: bottomNavs[index] == selectedBottomNav ? 1 : 0.5,
-                       child: RiveAnimation.asset(
-                         //src is same for all
-                         bottomNavs.first.src,
-                         artboard: bottomNavs[index].artboard,
-                         onInit: (artboard) {
-                           setState(() {
-                           });
-                         },
-                       ),
-                     ),
-                   ),
-                 ],
-               ),
-             ),),
-         ],
-        ),
+    controller.loadUsers();
+    return Container(
+      padding: EdgeInsets.symmetric( horizontal: 15.w, vertical: 10.w),
+      child: Obx(
+          () => ListView.builder(
+          shrinkWrap: true,
+          itemCount: controller.users.length,
+          itemBuilder: (context, index) {
+            return GestureDetector(
+              onTap: () {
+                String chatRoomId = controller.generateChatRoomId(UserStore.to.uid, controller.users[index].uid);
+                ChatRoomModel chatRoomModel = ChatRoomModel(
+                  users: [UserStore.to.uid, controller.users[index].uid],
+                  usersProfile: [UserStore.to.profile.photoId, controller.users[index].photoId],
+                  usersName: [UserStore.to.profile.username, controller.users[index].username],
+                  lastMessage: "",
+                  lastMessageBy: "",
+                  lastMessageTm:  DateTime.now(),
+                  chatRoomId: chatRoomId,
+                );
+                controller.createChatRoom(chatRoomModel, controller.users[index]);
+                Get.toNamed(
+                    RoutePaths.chattingSpace,
+                    parameters: {
+                      "chatRoomId": chatRoomId,
+                      "toUserProfile": controller.users[index].photoId,
+                      "toUserName": controller.users[index].username,
+                      "toUserUid": controller.users[index].uid
+                    }
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.5),
+                child: ListTile(
+                  title: Text(
+                    controller.users[index].username,
+                  ),
+                ),
+              ),
+            );
+          }),
       ),
     );
   }
 }
-
-

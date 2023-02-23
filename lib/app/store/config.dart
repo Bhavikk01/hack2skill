@@ -16,13 +16,6 @@ class ConfigStore extends GetxController {
     const Locale('zh', 'CN'),
   ];
 
-
-  @override
-  void onInit() {
-    super.onInit();
-    // isFirstOpen = StorageService.to.getBool(STORAGE_DEVICE_FIRST_OPEN_KEY);
-  }
-
   Future<void> getPlatform() async {
     _platform = await PackageInfo.fromPlatform();
   }

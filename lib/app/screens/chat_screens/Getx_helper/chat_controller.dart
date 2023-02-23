@@ -1,3 +1,4 @@
+
 import 'package:get/get.dart';
 
 import '../../../models/chat_room_model/chat_room_model.dart';
@@ -17,7 +18,6 @@ class ChatController extends GetxController{
   loadUsers() async {
     users.clear();
     var usersData = FirebaseFireStore.to.getAllUsers();
-
     usersData.listen((userSnapshot) {
       for(var userElement in userSnapshot.docs){
         users.add(

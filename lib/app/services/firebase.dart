@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../models/post_model/post_model.dart';
 import '../models/users/user_model.dart';
 import '../store/user.dart';
 
@@ -15,12 +16,28 @@ class FirebaseFireStore extends GetxController{
   final FirebaseFirestore fireStore = FirebaseFirestore.instance;
   FirebaseAuth auth = FirebaseAuth.instance;
 
+  /* This is the post services */
+  Future<void> addPosts(PostModel post)async{
+    String id = fireStore.collection("Users").doc().id;
+    await fireStore
+        .collection("Posts")
+        .doc(id)
+        .set(post.copyWith(postId: id).toJson());
+  }
 
+  Future<QuerySnapshot> getAllPosts(List<String> connections) {
+    return fireStore
+        .collection("Posts")
+        .where("userUid", whereIn: connections)
+        .orderBy("postTime", descending: true)
+        .get();
+  }
+
+  /* This is the user services */
   Future<void> addUser(UserModel user)async{
     await fireStore.collection("Users").doc(user.uid).set(user.toJson());
   }
 
-  /* This is the user services */
   Future<UserModel?> getUser(String uid) async {
     final doc = await fireStore.collection("Users").doc(uid).get();
     return doc.exists ? UserModel.fromJson(doc.data()!) : null;
@@ -71,12 +88,12 @@ class FirebaseFireStore extends GetxController{
               photoId: user.photoURL?? '',
               phoneNumber: user.phoneNumber?? '',
               posts: [""],
-              connections: [""]
+              connections: [user.uid]
           );
           await addUser(userModel);
-          await UserStore.to.saveProfile(userModel);
+          await UserStore.to.saveProfile(user.uid);
         }else{
-          await UserStore.to.saveProfile(userModel);
+          await UserStore.to.saveProfile(user.uid);
         }
       } on FirebaseAuthException catch (e) {
         if (e.code == 'account-exists-with-different-credential') {}
@@ -108,15 +125,17 @@ class FirebaseFireStore extends GetxController{
         .collection("message")
         .doc(docId)
         .collection("messageList")
-        .orderBy("messageTm", descending: true)
+        .orderBy("messageTm", descending: false)
         .snapshots();
   }
 
   Future<QuerySnapshot> getChatRoom() async {
-    return await fireStore
+    var data =  fireStore
         .collection("message")
-        .where("users", arrayContains: UserStore.to.uid)
-        .where("lastMessage", isNotEqualTo: '')
+        .where("users", arrayContains: UserStore.to.uid);
+
+    return data
+        .orderBy("lastMessageTm", descending: false)
         .get();
   }
 
@@ -129,6 +148,5 @@ class FirebaseFireStore extends GetxController{
           .set(chatRoom.toJson());
     }
   }
-
 
 }

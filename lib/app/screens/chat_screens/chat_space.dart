@@ -34,7 +34,6 @@ class ChatSpace extends GetView<ChatSpaceController> {
             children: [
               Container(
                 padding: EdgeInsets.only( top: 0.w, bottom: 0.w, right: 0.w),
-
                 child: InkWell(
                   child: SizedBox(
                     width: 44.w,
@@ -63,12 +62,12 @@ class ChatSpace extends GetView<ChatSpaceController> {
               ),
               SizedBox(width: 15.w,),
               Container(
-                width: 100.w,
+                // width: 100.w,
                 padding: EdgeInsets.only( top:  0.w, bottom: 0.w, right: 0.w),
                 child: Row(
                   children: [
                     SizedBox(
-                      width: 100.w,
+                      // width: 100.w,
                       height: 44.w,
                       child: GestureDetector(
                         onTap: (){
@@ -86,7 +85,6 @@ class ChatSpace extends GetView<ChatSpaceController> {
                                 color: Colors.white
                               ),
                             ),
-
                             Text(
                               'Unknown location',
                               overflow: TextOverflow.clip,
@@ -106,48 +104,44 @@ class ChatSpace extends GetView<ChatSpaceController> {
           ),
         ),
       ),
-      body: SafeArea(
+      body: Container(
+        color: Colors.grey[200],
         child: ConstrainedBox(
           constraints: const BoxConstraints.expand(),
           child: Stack(
             children: [
-              const ChatList(),
+              ChatList(),
               Positioned(
                 bottom: 0.h,
-                height: 50.h,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 217.w,
-                      height: 50.h,
-                      child: TextField(
-                        controller: controller.textController,
-                        keyboardType: TextInputType.multiline,
-                        autofocus: false,
-                        maxLines: 4,
-                        focusNode: controller.contentNode,
-                        decoration: const InputDecoration(
-                          hintText: "Send message...",
-
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 25.w),
+                  color: Colors.transparent,
+                  height: 50.h,
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 250.h,
+                        child: TextField(
+                          controller: controller.textController,
+                          decoration: const InputDecoration.collapsed(
+                            hintText: 'Send a message',
+                          ),
+                          textCapitalization: TextCapitalization.sentences,
                         ),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        controller.sendMessage();
-                      },
-                      child: Container(
-                        margin: EdgeInsets.symmetric( horizontal: 5.w, vertical: 3.w),
-                        padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.w),
-                        child: Icon(
+                      IconButton(
+                        onPressed: () {
+                          controller.sendMessage();
+                        },
+                        icon: const Icon(
                           Icons.send,
-                          size: 35.h,
+                          color: Color(0xff00c2cb),
                         ),
+                        iconSize: 25.h,
                       ),
-                    )
-                  ],
-                )
+                    ],
+                  ),
+                ),
               ),
             ],
           ),

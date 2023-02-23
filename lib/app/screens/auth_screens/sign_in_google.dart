@@ -3,7 +3,9 @@ import 'dart:developer';
 import 'package:chatty/app/routes/route_paths.dart';
 import 'package:chatty/app/store/store.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'Getx_helper/library.dart';
 
 class SignInGoogle extends GetView<SignInController> {
@@ -27,17 +29,17 @@ class SignInGoogle extends GetView<SignInController> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        SizedBox(height: 20),
+                      children: [
+                        SizedBox(height: 20.h),
                         Text(
                           'FlutterFire',
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
                             fontSize: 40,
                           ),
                         ),
                         Text(
                           'Authentication',
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
                             fontSize: 40,
                           ),
                         ),
@@ -59,12 +61,12 @@ class SignInGoogle extends GetView<SignInController> {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
+                        children: [
                           Padding(
-                            padding: EdgeInsets.only(left: 10),
+                            padding: EdgeInsets.only(left: 10.h),
                             child: Text(
                               'Sign in with Google',
-                              style: TextStyle(
+                              style: GoogleFonts.poppins(
                                 fontSize: 20,
                                 color: Colors.black54,
                                 fontWeight: FontWeight.w600,

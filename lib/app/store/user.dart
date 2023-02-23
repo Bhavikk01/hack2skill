@@ -1,15 +1,21 @@
+import 'dart:developer';
+
 import 'package:chatty/app/routes/route_paths.dart';
-import 'package:chatty/app/services/services.dart';
-import 'package:chatty/app/values/values.dart';
+import 'package:chatty/app/services/firebase.dart';
 import 'package:get/get.dart';
 
 import '../models/users/user_model.dart';
+import '../services/storage.dart';
 
 class UserStore extends GetxController {
   static UserStore get to => Get.find();
 
   final _isLogin = false.obs;
   String uid = '';
+  String userIdKey = 'userIdKey';
+  String userNameKey = 'userNameKey';
+  String userProfilePicKey = 'userProfilePicKey';
+  String userEmailKey = 'userEmailKey';
   final _profile = const UserModel(
     uid: '',
     photoId: '',
@@ -25,21 +31,9 @@ class UserStore extends GetxController {
   bool get hasToken => uid.isNotEmpty;
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
-    uid = StorageService.to.getString(userIdKey);
-    if (uid.isNotEmpty) {
-      String name = StorageService.to.getString(userNameKey);
-      String photoId = StorageService.to.getString(userProfilePicKey);
-      String email = StorageService.to.getString(userEmailKey);
-      _profile(_profile.value.copyWith(
-        username: name,
-        email: email,
-        photoId: photoId,
-        uid: uid,
-      ));
-      _isLogin.value = true;
-    }
+    getProfile();
   }
 
   Future<void> setToken(String value) async {
@@ -48,28 +42,18 @@ class UserStore extends GetxController {
   }
 
   Future<void> getProfile() async {
-    if (uid.isEmpty) return ;
-   String name = StorageService.to.getString(userNameKey);
-   String userId = StorageService.to.getString(userIdKey);
-   String photoId = StorageService.to.getString(userProfilePicKey);
-   String email = StorageService.to.getString(userEmailKey);
-   _profile(_profile.value.copyWith(
-     username: name,
-     email: email,
-     photoId: photoId,
-     uid: userId,
-   ));
+    uid = StorageService.to.getString(userIdKey);
+    if (uid.isNotEmpty) {
+      _profile(await FirebaseFireStore.to.getUser(uid));
+    }
     _isLogin.value = true;
   }
 
-  Future<void> saveProfile(UserModel profile) async {
-    _isLogin.value = true;
-    await StorageService.to.setString(userEmailKey, profile.email);
-    await StorageService.to.setString(userProfilePicKey, profile.photoId);
-    await StorageService.to.setString(userIdKey, profile.uid);
-    await StorageService.to.setString(userNameKey, profile.username);
-    _profile(profile);
-    uid = profile.uid;
+  Future<void> saveProfile(String profile) async {
+    await StorageService.to.setString(userIdKey, profile);
+    await getProfile();
+    uid = profile;
+    log("data is saved: ${_profile.value}");
   }
 
   Future<void> onLogout() async {

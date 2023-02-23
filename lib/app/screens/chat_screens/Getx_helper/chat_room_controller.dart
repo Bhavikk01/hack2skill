@@ -4,17 +4,17 @@ import 'package:chatty/app/services/firebase.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../../../models/users/user_model.dart';
 import '../../../store/user.dart';
 import 'chat_room_state.dart';
 
 class ChatRoomController extends GetxController{
   final state = ChatRoomState();
-
+  var index = 0.obs;
   final myUserId = UserStore.to.uid;
+  var isLoading = true.obs;
 
-  final RefreshController refreshController = RefreshController(
-    initialRefresh: true,
-  );
+  final RefreshController refreshController =RefreshController(initialRefresh: true);
 
   onRefresh(){
     asyncLoadData().then((_) =>
@@ -23,15 +23,24 @@ class ChatRoomController extends GetxController{
   }
 
   void onLoading(){
-    asyncLoadData().then((_) =>
-        refreshController.loadComplete()
-    );
+    // asyncLoadData().then((_) =>
+        refreshController.loadComplete();
+    // );
   }
 
+
+  @override
+  Future<void> onReady() async {
+    super.onReady();
+    await asyncLoadData();
+  }
+  
   asyncLoadData() async {
+    isLoading.value = true;
     var chatRoomList = await FirebaseFireStore.to.getChatRoom();
-    state.chatRoomList.clear();
     if(chatRoomList.docs.isNotEmpty){
+      state.otherUser.value = [];
+      state.chatRoomList.value = [];
       for(var chatRoom in chatRoomList.docs){
         Map<String, dynamic> chatRoomData = chatRoom.data() as Map<String, dynamic>;
         state.chatRoomList.add(
@@ -47,7 +56,11 @@ class ChatRoomController extends GetxController{
           );
         }
       }
-
+      Iterable isReversed = state.chatRoomList.reversed;
+      Iterable otherUserReversed = state.otherUser.reversed;
+      state.chatRoomList.value = isReversed.toList() as List<ChatRoomModel>;
+      state.otherUser.value = otherUserReversed.toList() as List<UserModel>;
+      isLoading.value = false;
     }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'color.dart';
 
@@ -19,15 +20,15 @@ class AppTheme {
       elevation: 0,
       centerTitle: true,
       backgroundColor: Colors.white,
-      iconTheme: IconThemeData(
+      iconTheme: const IconThemeData(
         color: AppColor.primaryText,
       ),
-      titleTextStyle: TextStyle(
+      titleTextStyle: GoogleFonts.poppins(
         color: AppColor.primaryText,
         fontSize: 20,
         fontWeight: FontWeight.w500,
       ),
-      toolbarTextStyle: TextStyle(
+      toolbarTextStyle: GoogleFonts.poppins(
         color: AppColor.primaryText,
         fontSize: 20,
         fontWeight: FontWeight.w500,
@@ -35,12 +36,12 @@ class AppTheme {
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: AppColor.scaffoldBackground,
-      unselectedLabelStyle: TextStyle(fontSize: 12),
-      selectedLabelStyle: TextStyle(fontSize: 12),
-      unselectedItemColor: Color(0xffA2A5B9),
+      unselectedLabelStyle: GoogleFonts.poppins(fontSize: 12),
+      selectedLabelStyle: GoogleFonts.poppins(fontSize: 12),
+      unselectedItemColor: const Color(0xffA2A5B9),
       selectedItemColor: AppColor.accentColor,
     ),
-    tabBarTheme: TabBarTheme(
+    tabBarTheme: const TabBarTheme(
       indicatorSize: TabBarIndicatorSize.label,
       labelColor: AppColor.accentColor,
       unselectedLabelColor: AppColor.secondaryText,

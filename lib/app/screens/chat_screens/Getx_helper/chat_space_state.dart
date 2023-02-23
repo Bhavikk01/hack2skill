@@ -10,8 +10,6 @@ class ChatSpaceState {
   var toUserUid = ''.obs;
   var chatRoomId = ''.obs;
 
-
-
   /* This is the getter */
   get isLoading => _isLoading.value;
 

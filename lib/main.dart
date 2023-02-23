@@ -8,19 +8,23 @@ import 'package:get/get.dart';
 
 import 'app/routes/route_paths.dart';
 import 'app/routes/routes.dart';
+import 'app/screens/chat_screens/Getx_helper/chat_controller.dart';
+import 'app/screens/chat_screens/Getx_helper/chat_room_controller.dart';
 import 'app/store/config.dart';
 import 'app/store/user.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Get.putAsync<StorageService>(() => StorageService().init());
-  Get.put<ConfigStore>(ConfigStore());
-  Get.put<UserStore>(UserStore());
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   Get.put<FirebaseFireStore>(FirebaseFireStore());
+  await Get.putAsync<StorageService>(() => StorageService().init());
+  Get.put<ConfigStore>(ConfigStore());
+  Get.put<UserStore>(UserStore());
+  Get.put<ChatController>(ChatController());
+  Get.put<ChatRoomController>(ChatRoomController());
   runApp(const MyApp());
 }
 
@@ -30,7 +34,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      builder: (context, child){
+      builder: (context, child) {
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',

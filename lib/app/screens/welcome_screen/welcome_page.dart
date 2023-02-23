@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'Getx_helper/library.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 
@@ -68,7 +69,7 @@ class WelcomePage extends GetView<WelcomeController> {
                               borderRadius: BorderRadius.circular(20)
                             ))
                           ),
-                          child: const Text('Login', style: TextStyle( fontSize: 20),),
+                          child: Text('Login', style: GoogleFonts.poppins( fontSize: 20),),
                         ),
                       )
                     ],
